@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Emergency Contacts</h1>
+            <p class="tagline">Quick access to important phone numbers</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="emergency-dashboard">
+                <div class="emergency-header">
+                    <div class="emergency-actions">
+                        <button id="add-contact-btn" class="primary-btn">
+                            <span class="btn-icon">+</span> Add Contact
+                        </button>
+                        <input type="text" id="search-contacts" placeholder="Search contacts..." class="search-box">
+                    </div>
+                    
+                    <div class="emergency-quick-dial">
+                        <div class="quick-dial-button" data-number="911">
+                            <div class="quick-dial-icon emergency">🚑</div>
+                            <div class="quick-dial-text">
+                                <div class="quick-dial-name">Emergency</div>
+                                <div class="quick-dial-number">911</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-dial-button" data-number="1-800-273-8255">
+                            <div class="quick-dial-icon crisis">🆘</div>
+                            <div class="quick-dial-text">
+                                <div class="quick-dial-name">Crisis Helpline</div>
+                                <div class="quick-dial-number">1-800-273-8255</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-dial-button" data-number="211">
+                            <div class="quick-dial-icon community">ℹ️</div>
+                            <div class="quick-dial-text">
+                                <div class="quick-dial-name">Community Services</div>
+                                <div class="quick-dial-number">211</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-categories">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="family">Family</button>
+                    <button class="category-btn" data-category="friends">Friends</button>
+                    <button class="category-btn" data-category="medical">Medical</button>
+                    <button class="category-btn" data-category="services">Services</button>
+                </div>
+                
+                <div id="contacts-list" class="contacts-list">
+                    <!-- Contacts will be listed here dynamically -->
+                    <div class="empty-state">
+                        <p>No contacts added yet</p>
+                        <p>Click "Add Contact" to get started</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Modal -->
+            <div id="contact-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="modal-title">Add New Contact</h2>
+                    
+                    <form id="contact-form">
+                        <input type="hidden" id="contact-id">
+                        
+                        <div class="form-group">
+                            <label for="contact-name">Name</label>
+                            <input type="text" id="contact-name" placeholder="Contact name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-phone">Phone Number</label>
+                            <input type="tel" id="contact-phone" placeholder="Phone number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-relation">Relationship</label>
+                            <input type="text" id="contact-relation" placeholder="e.g. Son, Doctor, Neighbor">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-category">Category</label>
+                            <select id="contact-category" required>
+                                <option value="family">Family</option>
+                                <option value="friends">Friends</option>
+                                <option value="medical">Medical</option>
+                                <option value="services">Services</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact-notes">Notes</label>
+                            <textarea id="contact-notes" placeholder="Any additional information"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="contact-favorite">
+                                Mark as Important
+                            </label>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Save Contact</button>
+                            <button type="button" id="delete-contact-btn" class="delete-btn" style="display: none;">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    
+    <script src="emergency-contacts.js"></script>
+</body>
+</html> 

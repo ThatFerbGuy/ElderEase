@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Text to Speech</h1>
+            <p class="tagline">Convert text to spoken words</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="tts-dashboard">
+                <div class="input-section">
+                    <textarea id="text-input" class="text-input" placeholder="Enter text here to convert to speech..."></textarea>
+                    
+                    <div class="word-count">
+                        <span id="wordCounter">0 words</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button id="play-btn" class="control-btn">
+                            <span class="btn-icon">▶️</span> Play
+                        </button>
+                        <button id="pause-btn" class="control-btn" disabled>
+                            <span class="btn-icon">⏸️</span> Pause
+                        </button>
+                        <button id="stop-btn" class="control-btn" disabled>
+                            <span class="btn-icon">⏹️</span> Stop
+                        </button>
+                        <button id="clear-btn" class="control-btn">
+                            <span class="btn-icon">🗑️</span> Clear
+                        </button>
+                        <button id="download-btn" class="control-btn">
+                            <span class="btn-icon">⬇️</span> Download
+                        </button>
+                    </div>
+                    
+                    <div class="status-indicator">
+                        <div class="speech-wave" id="speech-wave">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <p id="status-text">Ready</p>
+                    </div>
+                </div>
+                
+                <div class="settings-sidebar">
+                    <div class="voice-settings panel">
+                        <h3>Voice Settings</h3>
+                        <div class="settings-group">
+                            <label for="voice-select">Voice:</label>
+                            <select id="voice-select"></select>
+                            <button id="preview-voice-btn" class="small-btn">
+                                <span class="btn-icon">🔊</span> Preview
+                            </button>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="rate-range">Speed:</label>
+                            <div class="range-with-value">
+                                <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1">
+                                <span id="rate-value">1x</span>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="pitch-range">Pitch:</label>
+                            <div class="range-with-value">
+                                <input type="range" id="pitch-range" min="0.5" max="2" step="0.1" value="1">
+                                <span id="pitch-value">1x</span>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="volume-range">Volume:</label>
+                            <div class="range-with-value">
+                                <input type="range" id="volume-range" min="0" max="1" step="0.1" value="1">
+                                <span id="volume-value">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="saved-phrases panel">
+                        <h3>Common Phrases</h3>
+                        <div class="phrase-list">
+                            <button class="phrase-btn" data-text="Hello, how are you?">Hello, how are you?</button>
+                            <button class="phrase-btn" data-text="I need some help, please.">I need help</button>
+                            <button class="phrase-btn" data-text="Thank you very much.">Thank you</button>
+                            <button class="phrase-btn" data-text="Excuse me, could you assist me?">Excuse me</button>
+                            <button class="phrase-btn" data-text="I'm not feeling well today.">Not feeling well</button>
+                            <button class="phrase-btn" data-text="Can you please speak louder?">Speak louder</button>
+                        </div>
+                        
+                        <div class="custom-phrases">
+                            <h4>My Saved Phrases</h4>
+                            <div id="custom-phrase-list"></div>
+                            <div class="add-phrase-form">
+                                <input type="text" id="new-phrase-input" placeholder="Type a phrase to save">
+                                <button id="save-phrase-btn" class="small-btn">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    
+    <!-- Modal for recording conversion progress -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeDownloadModal">&times;</span>
+            <h2>Creating Audio File</h2>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="downloadProgress"></div>
+                </div>
+                <p id="downloadStatus">Preparing audio...</p>
+            </div>
+            <div class="download-actions" id="downloadActions" style="display: none;">
+                <button id="downloadAudioBtn" class="primary-btn">
+                    <span class="btn-icon">⬇️</span> Download Audio
+                </button>
+                <p class="note">Your audio will be downloaded as an MP3 file.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="text-to-speech.js"></script>
+</body>
+</html> 

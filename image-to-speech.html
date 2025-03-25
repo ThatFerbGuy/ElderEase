@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Speech - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Image to Speech</h1>
+            <p class="tagline">Extract and read text from images</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="upload-section">
+                <label for="imageUpload" class="upload-button">
+                    <span class="btn-icon">📷</span> Upload Image
+                    <input type="file" id="imageUpload" accept="image/*" hidden>
+                </label>
+                <div class="image-preview-container">
+                    <img id="imagePreview" alt="Preview" style="display: none;">
+                </div>
+            </div>
+
+            <div class="settings-panel">
+                <div class="settings-group">
+                    <label for="language-select">Text Language:</label>
+                    <select id="language-select">
+                        <option value="eng">English</option>
+                        <option value="spa">Spanish</option>
+                        <option value="fra">French</option>
+                        <option value="deu">German</option>
+                        <!-- Add more languages as needed -->
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="voice-select">Speech Voice:</label>
+                    <select id="voice-select"></select>
+                </div>
+                <div class="settings-group">
+                    <label for="rate-range">Speech Rate:</label>
+                    <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1">
+                    <span id="rate-value">1x</span>
+                </div>
+            </div>
+
+            <div class="progress-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="progress-text">Processing image...</div>
+            </div>
+
+            <div class="result-container" style="display: none;">
+                <div class="extracted-text-container">
+                    <h3>Extracted Text</h3>
+                    <div id="extractedText" class="extracted-text"></div>
+                </div>
+                <div class="control-buttons">
+                    <button id="playBtn" class="control-btn">
+                        <span class="btn-icon">▶️</span> Read Text
+                    </button>
+                    <button id="pauseBtn" class="control-btn" disabled>
+                        <span class="btn-icon">⏸️</span> Pause
+                    </button>
+                    <button id="stopBtn" class="control-btn" disabled>
+                        <span class="btn-icon">⏹️</span> Stop
+                    </button>
+                    <button id="copyBtn" class="control-btn">
+                        <span class="btn-icon">📋</span> Copy Text
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="image-to-speech.js"></script>
+</body>
+</html> 

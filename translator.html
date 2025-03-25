@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Translator - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Translator</h1>
+            <p class="tagline">Translate text between Indian languages</p>
+        </header>
+
+        <div class="feature-container translator-wrapper">
+            <div class="translator-container">
+                <div class="translation-box">
+                    <div class="input-section">
+                        <div class="language-bar">
+                            <select id="fromLang" class="language-select">
+                                <option value="en">English</option>
+                                <option value="ml">Malayalam</option>
+                                <option value="hi">Hindi</option>
+                                <option value="ta">Tamil</option>
+                                <option value="te">Telugu</option>
+                            </select>
+                            <button id="clearBtn" class="icon-btn" title="Clear text">
+                                ✕
+                            </button>
+                        </div>
+                        <textarea 
+                            id="sourceText" 
+                            class="text-area" 
+                            placeholder="Enter text to translate..."
+                        ></textarea>
+                    </div>
+                    
+                    <div class="center-controls">
+                        <button id="swapLang" class="swap-btn" title="Swap languages">
+                            🔄
+                        </button>
+                        <button id="translateBtn" class="translate-btn">
+                            Translate
+                        </button>
+                    </div>
+                    
+                    <div class="output-section">
+                        <div class="language-bar">
+                            <select id="toLang" class="language-select">
+                                <option value="ml">Malayalam</option>
+                                <option value="hi">Hindi</option>
+                                <option value="ta">Tamil</option>
+                                <option value="te">Telugu</option>
+                                <option value="en">English</option>
+                            </select>
+                            <div class="output-actions">
+                                <button id="copyBtn" class="icon-btn" title="Copy translation">
+                                    📋
+                                </button>
+                                <button id="speakBtn" class="icon-btn" title="Listen">
+                                    🔊
+                                </button>
+                            </div>
+                        </div>
+                        <div id="translatedText" class="text-area result"></div>
+                    </div>
+                </div>
+                
+                <div class="quick-phrases">
+                    <h3>Quick Phrases</h3>
+                    <div class="phrase-buttons">
+                        <button class="phrase-btn" data-text="hello">Hello</button>
+                        <button class="phrase-btn" data-text="good morning">Good Morning</button>
+                        <button class="phrase-btn" data-text="how are you">How are you?</button>
+                        <button class="phrase-btn" data-text="thank you">Thank you</button>
+                        <button class="phrase-btn" data-text="please">Please</button>
+                        <button class="phrase-btn" data-text="yes">Yes</button>
+                        <button class="phrase-btn" data-text="no">No</button>
+                        <button class="phrase-btn" data-text="help me">Help me</button>
+                    </div>
+                </div>
+                
+                <div class="translation-tips">
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Try translating simple phrases first</li>
+                        <li>For multi-word phrases, make sure spelling is correct</li>
+                        <li>Click any quick phrase to instantly use it</li>
+                        <li>Use the speak button to hear pronunciation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="statusMessage" class="status-message"></div>
+    <script src="translator.js"></script>
+</body>
+</html> 

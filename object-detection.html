@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection - ElderEase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Object Detection</h1>
+            <p class="tagline">Identify objects in images</p>
+        </header>
+
+        <div class="feature-container">
+            <div id="uploadSection" class="upload-section">
+                <label for="imageUpload" class="upload-button">
+                    <span class="upload-icon">📷</span>
+                    Upload Image
+                    <input type="file" id="imageUpload" accept="image/*">
+                </label>
+                <p class="upload-instruction">Select a photo to identify objects in it</p>
+            </div>
+
+            <div class="preview-section">
+                <img id="imagePreview" src="#" alt="Preview" style="display: none;">
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div id="descriptionSection" class="description-section" style="display: none;">
+                <h2>Image Description</h2>
+                <div class="description-container">
+                    <div id="description" class="description-text"></div>
+                    <button id="speakDescription" class="speak-btn" disabled>🔊 Speak Description</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>Detected Objects</h2>
+                <div id="results"></div>
+            </div>
+        </div>
+    </div>
+    <script src="object-detection.js"></script>
+</body>
+</html>

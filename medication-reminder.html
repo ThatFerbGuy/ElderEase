@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Reminder - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Medication Reminder</h1>
+            <p class="tagline">Never miss your medications</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="reminder-dashboard">
+                <div class="upcoming-reminders">
+                    <h2>Upcoming Reminders</h2>
+                    <div id="remindersList" class="reminders-list"></div>
+                </div>
+                
+                <audio id="reminderSound" preload="auto">
+                    <source src="https://assets.coderrocketfuel.com/pomodoro-times-up.mp3" type="audio/mp3">
+                </audio>
+                
+                <div class="sound-settings">
+                    <h3>Alert Settings</h3>
+                    <div class="setting-group">
+                        <label for="alertVolume">Alert Volume:</label>
+                        <input type="range" id="alertVolume" min="0" max="1" step="0.1" value="0.5">
+                        <button id="testAlertBtn" class="small-btn">Test</button>
+                    </div>
+                    <div class="setting-group">
+                        <label for="alertEnabled">
+                            <input type="checkbox" id="alertEnabled" checked>
+                            Enable Sound Alerts
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="medications-container">
+                <div class="medications-header">
+                    <h2>My Medications</h2>
+                    <button id="addMedicationBtn" class="primary-btn">+ Add Medication</button>
+                </div>
+                <div id="medicationsList" class="medications-list"></div>
+            </div>
+
+            <!-- Add Medication Modal -->
+            <div id="addMedicationModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" id="cancelAdd">&times;</span>
+                    <h2>Add New Medication</h2>
+                    <form id="medicationForm">
+                        <div class="form-group">
+                            <label for="medName">Medication Name:</label>
+                            <input type="text" id="medName" placeholder="e.g., Aspirin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dosage">Dosage:</label>
+                            <input type="text" id="dosage" placeholder="e.g., 1 tablet" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Time to Take:</label>
+                            <input type="time" id="time" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="frequency">Frequency:</label>
+                            <select id="frequency" required>
+                                <option value="daily">Daily</option>
+                                <option value="twice">Twice Daily</option>
+                                <option value="thrice">Thrice Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="custom">Custom Days</option>
+                            </select>
+                        </div>
+                        <div id="customFrequency" class="form-group" style="display: none;">
+                            <label>Select Days:</label>
+                            <div class="day-selector">
+                                <label><input type="checkbox" value="0"> Sun</label>
+                                <label><input type="checkbox" value="1"> Mon</label>
+                                <label><input type="checkbox" value="2"> Tue</label>
+                                <label><input type="checkbox" value="3"> Wed</label>
+                                <label><input type="checkbox" value="4"> Thu</label>
+                                <label><input type="checkbox" value="5"> Fri</label>
+                                <label><input type="checkbox" value="6"> Sat</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes:</label>
+                            <textarea id="notes" placeholder="Additional instructions or notes"></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" id="cancelAdd" class="secondary-btn">Cancel</button>
+                            <button type="submit" class="primary-btn">Save Medication</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Edit Medication Modal -->
+            <div id="editMedicationModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" id="cancelEdit">&times;</span>
+                    <h2>Edit Medication</h2>
+                    <form id="editMedicationForm">
+                        <input type="hidden" id="editMedId">
+                        <div class="form-group">
+                            <label for="editMedName">Medication Name:</label>
+                            <input type="text" id="editMedName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDosage">Dosage:</label>
+                            <input type="text" id="editDosage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTime">Time to Take:</label>
+                            <input type="time" id="editTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editFrequency">Frequency:</label>
+                            <select id="editFrequency" required>
+                                <option value="daily">Daily</option>
+                                <option value="twice">Twice Daily</option>
+                                <option value="thrice">Thrice Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="custom">Custom Days</option>
+                            </select>
+                        </div>
+                        <div id="editCustomFrequency" class="form-group" style="display: none;">
+                            <label>Select Days:</label>
+                            <div class="day-selector">
+                                <label><input type="checkbox" value="0"> Sun</label>
+                                <label><input type="checkbox" value="1"> Mon</label>
+                                <label><input type="checkbox" value="2"> Tue</label>
+                                <label><input type="checkbox" value="3"> Wed</label>
+                                <label><input type="checkbox" value="4"> Thu</label>
+                                <label><input type="checkbox" value="5"> Fri</label>
+                                <label><input type="checkbox" value="6"> Sat</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editNotes">Notes:</label>
+                            <textarea id="editNotes"></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" id="cancelEdit" class="secondary-btn">Cancel</button>
+                            <button type="submit" class="primary-btn">Update Medication</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    <script src="medication-reminder.js"></script>
+</body>
+</html> 

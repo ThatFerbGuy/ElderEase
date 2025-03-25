@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwriting Recognition - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Handwriting Recognition</h1>
+            <p class="tagline">Convert your handwriting to digital text</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="instructions">
+                <h3>How to Use</h3>
+                <ol>
+                    <li>Write or draw on the canvas below</li>
+                    <li>Click "Recognize Text" to convert your writing</li>
+                    <li>Use "Read Aloud" to hear the text</li>
+                </ol>
+            </div>
+
+            <div class="drawing-tools">
+                <button id="clearBtn" class="control-btn large-btn">
+                    <span class="btn-icon">🗑️</span> Clear All
+                </button>
+                <button id="undoBtn" class="control-btn large-btn">
+                    <span class="btn-icon">↩️</span> Undo
+                </button>
+                <div class="pen-settings">
+                    <label for="penSize">Pen Size:</label>
+                    <input type="range" id="penSize" min="1" max="20" value="5">
+                    <span id="penSizeValue">5px</span>
+                </div>
+                <div class="pen-settings">
+                    <label for="penColor">Color:</label>
+                    <input type="color" id="penColor" value="#000000">
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="drawingCanvas"></canvas>
+                <div class="canvas-overlay">Write here or upload an image</div>
+            </div>
+
+            <div class="upload-section">
+                <label for="imageUpload" class="upload-button">
+                    <span class="btn-icon">📷</span> Upload Image
+                    <input type="file" id="imageUpload" accept="image/*">
+                </label>
+            </div>
+
+            <div class="simplified-settings">
+                <h3>Language Settings</h3>
+                <div class="settings-group">
+                    <label for="language">Recognition Language:</label>
+                    <select id="language">
+                        <option value="eng">English</option>
+                        <option value="hin">Hindi</option>
+                        <option value="mal">Malayalam</option>
+                        <option value="eng+hin">English + Hindi</option>
+                        <option value="eng+mal">English + Malayalam</option>
+                        <option value="eng+fra">English + French</option>
+                        <option value="eng+spa">English + Spanish</option>
+                        <option value="eng+deu">English + German</option>
+                    </select>
+                </div>
+                <div class="settings-group">
+                    <label for="recognitionMode">Recognition Mode:</label>
+                    <select id="recognitionMode">
+                        <option value="standard">Standard (Faster)</option>
+                        <option value="accurate">Accurate (Better but Slower)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-buttons">
+                <button id="recognizeBtn" class="control-btn primary large-btn">
+                    <span class="btn-icon">🔍</span> Recognize Text
+                </button>
+                <button id="speakBtn" class="control-btn large-btn" disabled>
+                    <span class="btn-icon">🔊</span> Read Aloud
+                </button>
+                <button id="copyBtn" class="control-btn large-btn" disabled>
+                    <span class="btn-icon">📋</span> Copy Text
+                </button>
+                <button id="saveBtn" class="control-btn large-btn" disabled>
+                    <span class="btn-icon">💾</span> Save
+                </button>
+            </div>
+
+            <div class="result-section">
+                <h2>Recognized Text</h2>
+                <div id="result" class="result-display"></div>
+                <div id="confidence" class="confidence-display"></div>
+            </div>
+
+            <div class="history-section">
+                <h2>Recognition History</h2>
+                <div id="history" class="history-list"></div>
+                <button id="clearHistoryBtn" class="control-btn large-btn">
+                    <span class="btn-icon">🗑️</span> Clear History
+                </button>
+            </div>
+
+            <div id="status" class="status-message"></div>
+        </div>
+
+        <footer>
+            <p>ElderEase - Empowering Independence Through Technology</p>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/opencv.js"></script>
+    <script src="handwriting.js"></script>
+</body>
+</html> 

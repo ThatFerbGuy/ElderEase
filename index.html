@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElderEase - Accessibility Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ElderEase</h1>
+            <p class="tagline">Making technology accessible for everyone</p>
+        </header>
+
+        <div class="auth-buttons">
+            <button id="loginBtn" class="auth-btn">Login</button>
+            <button id="signupBtn" class="auth-btn">Sign Up</button>
+        </div>
+
+        <div class="features-grid">
+            <a href="object-detection.html" class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Object Recognition</h3>
+                <p>Identify objects in images</p>
+            </a>
+
+            <a href="handwriting.html" class="feature-card">
+                <div class="feature-icon">✍️</div>
+                <h3>Handwriting Recognition</h3>
+                <p>Convert handwritten text to digital</p>
+            </a>
+
+            <a href="text-to-speech.html" class="feature-card">
+                <div class="feature-icon">🔊</div>
+                <h3>Text to Speech</h3>
+                <p>Convert text to spoken words</p>
+            </a>
+
+            <a href="speech-to-text.html" class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3>Speech to Text</h3>
+                <p>Convert your voice to written text</p>
+            </a>
+
+            <a href="medication-reminder.html" class="feature-card">
+                <div class="feature-icon">💊</div>
+                <h3>Medication Reminder</h3>
+                <p>Never miss your medications</p>
+            </a>
+
+            <a href="color-identifier.html" class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Color Identifier</h3>
+                <p>Identify colors in images</p>
+            </a>
+            
+            <a href="translator.html" class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Translator</h3>
+                <p>Translate text between languages</p>
+            </a>
+            
+            <a href="day-planner.html" class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3>Day Planner</h3>
+                <p>Schedule your daily activities</p>
+            </a>
+            
+            <a href="notes.html" class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Notes</h3>
+                <p>Keep important reminders</p>
+            </a>
+            
+            <a href="emergency-contacts.html" class="feature-card">
+                <div class="feature-icon">☎️</div>
+                <h3>Emergency Contacts</h3>
+                <p>Quick access to important numbers</p>
+            </a>
+        </div>
+
+        <footer>
+            <p>ElderEase - Empowering Independence Through Technology</p>
+        </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginName">Username</label>
+                    <input type="text" id="loginName" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Username</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

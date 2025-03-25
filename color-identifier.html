@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Identifier - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <!-- Add TensorFlow.js and COCO-SSD model for object detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Color Identifier</h1>
+            <p class="tagline">Identify colors and objects in images</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="upload-section">
+                <label for="imageUpload" class="upload-button">
+                    <span class="upload-icon">🖼️</span>
+                    Upload Image
+                    <input type="file" id="imageUpload" accept="image/*">
+                </label>
+                <p class="upload-instruction">Select a photo to identify colors and objects</p>
+            </div>
+
+            <div class="preview-section">
+                <img id="imagePreview" src="#" alt="Preview" style="display: none;">
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+
+            <div id="loadingIndicator" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Analyzing image... please wait</p>
+            </div>
+
+            <div id="objectsSection" class="objects-section" style="display: none;">
+                <h2>Detected Objects</h2>
+                <div id="objectResults" class="object-grid"></div>
+                <button id="speakObjects" class="speak-btn">
+                    🔊 Speak Object Colors
+                </button>
+            </div>
+
+            <div id="colorsSection" class="colors-section" style="display: none;">
+                <h2>Dominant Colors</h2>
+                <div id="colorResults" class="color-grid"></div>
+            </div>
+
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    <script src="color-identifier.js"></script>
+</body>
+</html> 

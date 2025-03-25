@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Notes</h1>
+            <p class="tagline">Keep track of important information</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="notes-dashboard">
+                <div class="sidebar">
+                    <div class="notes-header">
+                        <h3>My Notes</h3>
+                        <button id="add-note-btn" class="primary-btn">
+                            <span class="btn-icon">+</span> New Note
+                        </button>
+                    </div>
+                    
+                    <div class="note-type-selector">
+                        <button id="all-notes-btn" class="note-type-btn active">All Notes</button>
+                        <button id="list-notes-btn" class="note-type-btn">Lists</button>
+                        <button id="checklist-notes-btn" class="note-type-btn">Checklists</button>
+                    </div>
+                    
+                    <div id="notes-list" class="notes-list">
+                        <!-- Notes will be listed here -->
+                        <div class="empty-state">
+                            <p>No notes yet</p>
+                            <p>Click "New Note" to create one</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="note-editor">
+                    <div class="editor-header">
+                        <input type="text" id="note-title" placeholder="Note Title" class="note-title-input">
+                        
+                        <div class="note-type-toggle">
+                            <label>
+                                <input type="radio" name="note-type" value="list" checked>
+                                List
+                            </label>
+                            <label>
+                                <input type="radio" name="note-type" value="checklist">
+                                Checklist
+                            </label>
+                        </div>
+                        
+                        <div class="editor-actions">
+                            <button id="save-note-btn" class="control-btn">
+                                <span class="btn-icon">💾</span> Save
+                            </button>
+                            <button id="delete-note-btn" class="control-btn" disabled>
+                                <span class="btn-icon">🗑️</span> Delete
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="note-content">
+                        <ul id="note-items" class="note-items">
+                            <!-- Note items will be listed here -->
+                            <li class="note-item">
+                                <div class="item-container list-item">
+                                    <input type="text" class="item-text" placeholder="Type a new item...">
+                                    <button class="remove-item-btn">×</button>
+                                </div>
+                            </li>
+                        </ul>
+                        
+                        <button id="add-item-btn" class="add-item-btn">
+                            <span class="btn-icon">+</span> Add Item
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    
+    <script src="notes.js"></script>
+</body>
+</html> 

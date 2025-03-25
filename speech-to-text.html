@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Speech to Text</h1>
+            <p class="tagline">Convert your voice to written text</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="stt-dashboard">
+                <div class="output-section">
+                    <textarea id="text-output" class="text-input" placeholder="Your speech will appear here..." readonly></textarea>
+                    
+                    <div class="word-count">
+                        <span id="wordCounter">0 words</span>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button id="start-btn" class="control-btn">
+                            <span class="btn-icon">🎤</span> Start Recording
+                        </button>
+                        <button id="stop-btn" class="control-btn" disabled>
+                            <span class="btn-icon">⏹️</span> Stop
+                        </button>
+                        <button id="clear-btn" class="control-btn">
+                            <span class="btn-icon">🗑️</span> Clear
+                        </button>
+                        <button id="copy-btn" class="control-btn">
+                            <span class="btn-icon">📋</span> Copy
+                        </button>
+                        <button id="send-to-tts-btn" class="control-btn">
+                            <span class="btn-icon">🔊</span> Send to TTS
+                        </button>
+                    </div>
+                    
+                    <div class="status-indicator">
+                        <div class="speech-wave" id="speech-wave">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                        <p id="status-text">Ready</p>
+                    </div>
+                </div>
+                
+                <div class="settings-sidebar">
+                    <div class="voice-settings panel">
+                        <h3>Recognition Settings</h3>
+                        <div class="settings-group">
+                            <label for="language-select">Language:</label>
+                            <select id="language-select">
+                                <option value="en-US">English (US)</option>
+                                <option value="en-GB">English (UK)</option>
+                                <option value="hi-IN">Hindi</option>
+                                <option value="ta-IN">Tamil</option>
+                                <option value="te-IN">Telugu</option>
+                                <option value="ml-IN">Malayalam</option>
+                            </select>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label>
+                                <input type="checkbox" id="continuous-mode" checked>
+                                Continuous Recording
+                            </label>
+                            <p class="setting-description">Keep recording until manually stopped</p>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label>
+                                <input type="checkbox" id="interim-results" checked>
+                                Show Interim Results
+                            </label>
+                            <p class="setting-description">Show partial results while speaking</p>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label>
+                                <input type="checkbox" id="auto-punctuate">
+                                Auto Punctuation
+                            </label>
+                            <p class="setting-description">Attempt to add punctuation automatically</p>
+                        </div>
+                    </div>
+                    
+                    <div class="commands-panel panel">
+                        <h3>Voice Commands</h3>
+                        <p class="setting-description">Say these commands while recording:</p>
+                        
+                        <div class="command-list">
+                            <div class="command-item">
+                                <span class="command-phrase">"New line"</span>
+                                <span class="command-desc">Add a line break</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"New paragraph"</span>
+                                <span class="command-desc">Add a paragraph break</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Period" or "Full stop"</span>
+                                <span class="command-desc">Add a period (.)</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Question mark"</span>
+                                <span class="command-desc">Add a question mark (?)</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Exclamation point"</span>
+                                <span class="command-desc">Add an exclamation mark (!)</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Comma"</span>
+                                <span class="command-desc">Add a comma (,)</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Delete that" or "Erase that"</span>
+                                <span class="command-desc">Delete the last sentence</span>
+                            </div>
+                            <div class="command-item">
+                                <span class="command-phrase">"Stop listening"</span>
+                                <span class="command-desc">Stop recording</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    
+    <script src="speech-to-text.js"></script>
+</body>
+</html> 

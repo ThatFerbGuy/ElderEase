@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Planner - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-button">← Back to Home</a>
+            <h1>Day Planner</h1>
+            <p class="tagline">Organize your daily activities and never miss an appointment</p>
+        </header>
+
+        <div class="feature-container">
+            <div class="planner-dashboard">
+                <div class="calendar-section">
+                    <div class="calendar-header">
+                        <button id="prev-month" class="calendar-nav-btn">←</button>
+                        <h2 id="current-month">September 2023</h2>
+                        <button id="next-month" class="calendar-nav-btn">→</button>
+                    </div>
+                    
+                    <div class="weekdays">
+                        <div>Sun</div>
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                    </div>
+                    
+                    <div id="calendar-days" class="calendar-days">
+                        <!-- Days will be generated dynamically -->
+                    </div>
+                    
+                    <button id="today-btn" class="control-btn">Today</button>
+                </div>
+                
+                <div class="events-section">
+                    <div class="events-header">
+                        <h3 id="selected-date">Today's Schedule</h3>
+                        <button id="add-event-btn" class="primary-btn">
+                            <span class="btn-icon">+</span> Add Event
+                        </button>
+                    </div>
+                    
+                    <div id="events-list" class="events-list">
+                        <!-- Events will be listed here -->
+                        <div class="empty-state">
+                            <p>No events scheduled for today</p>
+                            <p>Click "Add Event" to create your first event</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Event Modal -->
+            <div id="event-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 id="modal-title">Add New Event</h2>
+                    
+                    <form id="event-form">
+                        <input type="hidden" id="event-id">
+                        <input type="hidden" id="event-date">
+                        
+                        <div class="form-group">
+                            <label for="event-title">Title</label>
+                            <input type="text" id="event-title" placeholder="Event title" required>
+                        </div>
+                        
+                        <div class="form-group time-group">
+                            <div>
+                                <label for="event-start-time">Start Time</label>
+                                <input type="time" id="event-start-time">
+                            </div>
+                            <div>
+                                <label for="event-end-time">End Time</label>
+                                <input type="time" id="event-end-time">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="event-location">Location</label>
+                            <input type="text" id="event-location" placeholder="Where is this event?">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="event-description">Description</label>
+                            <textarea id="event-description" placeholder="Additional details..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="event-reminder">
+                                Set Reminder
+                            </label>
+                        </div>
+                        
+                        <div class="form-group reminder-options" style="display: none;">
+                            <label for="reminder-time">Remind me</label>
+                            <select id="reminder-time">
+                                <option value="15">15 minutes before</option>
+                                <option value="30">30 minutes before</option>
+                                <option value="60">1 hour before</option>
+                                <option value="120">2 hours before</option>
+                                <option value="1440">1 day before</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" class="submit-btn">Save Event</button>
+                            <button type="button" id="delete-event-btn" class="delete-btn" style="display: none;">Delete</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-message"></div>
+        </div>
+    </div>
+    
+    <script src="day-planner.js"></script>
+</body>
+</html> 
