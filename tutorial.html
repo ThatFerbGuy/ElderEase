@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elder Ease - Tutorials</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="features.css">
+    <style>
+        .tutorial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .feature-tutorial {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .feature-tutorial h3 {
+            color: #4285f4;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-tutorial h3 .icon {
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        
+        .tutorial-steps {
+            margin-top: 15px;
+        }
+        
+        .tutorial-steps li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .back-home {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .back-home:hover {
+            background-color: #2b68d9;
+        }
+        
+        .section-description {
+            margin-bottom: 30px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .tutorial-narration {
+            margin-left: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #4285f4;
+            transition: transform 0.2s;
+        }
+        
+        .tutorial-narration:hover {
+            transform: scale(1.2);
+        }
+        
+        .feature-header {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Audio controls styles */
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #4285f4;
+            border-radius: 50px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .audio-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .audio-controls button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .audio-controls button:active {
+            transform: scale(0.95);
+        }
+
+        .nav-controls {
+            display: none;
+        }
+
+        .nav-controls.active {
+            display: flex;
+        }
+
+        /* Highlight the current section being read */
+        .feature-tutorial.active {
+            border-left: 5px solid #4285f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Elder Ease Logo">
+            <h1>Elder Ease</h1>
+        </div>
+        <div class="auth-buttons">
+            <button id="loginBtn" class="auth-btn">Login</button>
+            <button id="signupBtn" class="auth-btn">Sign Up</button>
+        </div>
+    </header>
+
+    <main class="tutorial-container">
+        <h2>Elder Ease Tutorials</h2>
+        <div style="display: flex; align-items: center;">
+            <p class="section-description">Welcome to Elder Ease! This page provides information about all the features available in our application and how to use them effectively.</p>
+            <span class="tutorial-narration" title="Read aloud">🔊</span>
+        </div>
+        
+        <a href="index.html" class="back-home">← Back to Home</a>
+        
+        <div class="feature-tutorial" data-section="object-detection">
+            <div class="feature-header">
+                <h3><span class="icon">🔍</span>Object Detection</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Object Detection helps you identify objects in images or through your camera.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Object Detection" feature on the home page</li>
+                    <li>Allow camera access when prompted</li>
+                    <li>Point your camera at objects you want to identify</li>
+                    <li>The app will display the name and confidence level for detected objects</li>
+                    <li>You can also upload an image using the "Upload Image" button</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="handwriting">
+            <div class="feature-header">
+                <h3><span class="icon">✍️</span>Handwriting Recognition</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Handwriting Recognition converts your handwritten text into digital text.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Handwriting Recognition" feature on the home page</li>
+                    <li>You can either write on the canvas using your mouse/touchscreen or upload an image</li>
+                    <li>Click the "Recognize" button to convert your handwriting to text</li>
+                    <li>The converted text will appear in the text box below</li>
+                    <li>Use the "Clear" button to erase your writing and start again</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="text-to-speech">
+            <div class="feature-header">
+                <h3><span class="icon">🔊</span>Text to Speech</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Text to Speech converts written text into spoken words.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Text to Speech" feature on the home page</li>
+                    <li>Type or paste the text you want to hear in the text area</li>
+                    <li>Select a voice from the dropdown menu</li>
+                    <li>Adjust the speech rate and pitch if desired</li>
+                    <li>Click the "Speak" button to hear the text</li>
+                    <li>Use the "Pause" and "Stop" buttons to control playback</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="speech-to-text">
+            <div class="feature-header">
+                <h3><span class="icon">🎤</span>Speech to Text</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Speech to Text converts your voice into written text, supporting multiple languages.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Speech to Text" feature on the home page</li>
+                    <li>Select your preferred language from the dropdown menu or enable auto-detection</li>
+                    <li>Click the "Start Listening" button to begin recording</li>
+                    <li>Speak clearly into your microphone</li>
+                    <li>Your speech will be converted to text in real-time</li>
+                    <li>Use voice commands like "new line" or their equivalent in your language</li>
+                    <li>Click "Stop Listening" when finished</li>
+                    <li>You can copy, save, or clear the text using the buttons provided</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="medication-reminder">
+            <div class="feature-header">
+                <h3><span class="icon">💊</span>Medication Reminder</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Medication Reminder helps you keep track of your medications.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Medication Reminder" feature on the home page</li>
+                    <li>Click "Add Medication" to create a new reminder</li>
+                    <li>Enter the medication name, dosage, and schedule</li>
+                    <li>Set up reminder times for each dose</li>
+                    <li>Click "Save" to add the medication to your list</li>
+                    <li>You will receive notifications when it's time to take your medication</li>
+                    <li>Use the "Edit" and "Delete" buttons to manage your medications</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="color-identifier">
+            <div class="feature-header">
+                <h3><span class="icon">🎨</span>Color Identifier</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Color Identifier helps identify colors in images for users with color vision deficiencies.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Color Identifier" feature on the home page</li>
+                    <li>Allow camera access when prompted for real-time color identification</li>
+                    <li>Alternatively, upload an image using the "Upload Image" button</li>
+                    <li>Click on any part of the image or camera feed to identify the color</li>
+                    <li>The app will display the color name and its RGB/HEX values</li>
+                    <li>The color information can be read aloud by clicking the speaker icon</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="translator">
+            <div class="feature-header">
+                <h3><span class="icon">🌐</span>Translator</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Translator helps you translate text between different languages.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Translator" feature on the home page</li>
+                    <li>Select the source language from the first dropdown menu</li>
+                    <li>Select the target language from the second dropdown menu</li>
+                    <li>Type or paste the text you want to translate in the left text area</li>
+                    <li>Click the "Translate" button to see the translation in the right text area</li>
+                    <li>Use the "Swap Languages" button to reverse the source and target languages</li>
+                    <li>Click the speaker icons to hear the original text or the translation</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="day-planner">
+            <div class="feature-header">
+                <h3><span class="icon">📅</span>Day Planner</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Day Planner helps you organize your daily schedule.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Day Planner" feature on the home page</li>
+                    <li>View your schedule in the calendar interface</li>
+                    <li>Click on a date to see events for that day</li>
+                    <li>Click "Add Event" to create a new event</li>
+                    <li>Fill in the event details, including title, time, and description</li>
+                    <li>Set reminder notifications if desired</li>
+                    <li>Click "Save" to add the event to your calendar</li>
+                    <li>Use the "Edit" and "Delete" buttons to manage existing events</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="notes">
+            <div class="feature-header">
+                <h3><span class="icon">📝</span>Notes</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Notes allows you to keep track of important information.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Notes" feature on the home page</li>
+                    <li>View your existing notes in the sidebar</li>
+                    <li>Click "New Note" to create a new note</li>
+                    <li>Enter a title and content for your note</li>
+                    <li>Click "Save" to store the note</li>
+                    <li>Click on any note in the sidebar to view or edit it</li>
+                    <li>Use the formatting tools to style your text</li>
+                    <li>Notes are automatically saved to your device</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="feature-tutorial" data-section="emergency-contacts">
+            <div class="feature-header">
+                <h3><span class="icon">📞</span>Emergency Contacts</h3>
+                <span class="tutorial-narration" title="Read aloud">🔊</span>
+            </div>
+            <p>Emergency Contacts provides quick access to important phone numbers.</p>
+            <div class="tutorial-steps">
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Click on the "Emergency Contacts" feature on the home page</li>
+                    <li>View your existing emergency contacts</li>
+                    <li>Click "Add Contact" to create a new emergency contact</li>
+                    <li>Enter the contact name, relationship, phone number, and any notes</li>
+                    <li>Click "Save" to add the contact to your list</li>
+                    <li>Click the phone icon next to any contact to quickly call them</li>
+                    <li>Use the "Edit" and "Delete" buttons to manage existing contacts</li>
+                    <li>Important contacts like emergency services are pre-populated</li>
+                </ol>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-home">← Back to Home</a>
+    </main>
+
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button id="playPauseBtn" title="Play/Pause">▶️</button>
+        <div class="nav-controls">
+            <button id="prevBtn" title="Previous Section">⏮️</button>
+            <button id="nextBtn" title="Next Section">⏭️</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginName">Username</label>
+                    <input type="text" id="loginName" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Username</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="services/speech.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Add narration functionality to the tutorial page
+        document.addEventListener('DOMContentLoaded', () => {
+            const narrationButtons = document.querySelectorAll('.tutorial-narration');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const navControls = document.querySelector('.nav-controls');
+            
+            const sections = Array.from(document.querySelectorAll('.feature-tutorial'));
+            const welcomeSection = document.querySelector('.section-description').closest('div');
+            
+            let currentSectionIndex = -1;
+            let isPlaying = false;
+            
+            // Function to remove emojis from text
+            function removeEmojis(text) {
+                return text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
+            }
+            
+            // Function to get text from a section
+            function getTextFromSection(section) {
+                if (section === welcomeSection) {
+                    return removeEmojis(section.querySelector('.section-description').textContent);
+                } else {
+                    // Get the title and remove the emoji
+                    const titleWithEmoji = section.querySelector('h3').textContent;
+                    const title = removeEmojis(titleWithEmoji).trim();
+                    const description = section.querySelector('p').textContent;
+                    
+                    // Build the text to read
+                    let textToRead = `${title}. ${description}`;
+                    
+                    // Add the steps
+                    const steps = section.querySelectorAll('.tutorial-steps li');
+                    if (steps.length > 0) {
+                        textToRead += " How to use: ";
+                        steps.forEach((step, index) => {
+                            // Remove any emojis from the step text
+                            const stepText = removeEmojis(step.textContent).trim();
+                            textToRead += ` Step ${index + 1}: ${stepText}. `;
+                        });
+                    }
+                    
+                    return textToRead;
+                }
+            }
+            
+            // Play a specific section
+            function playSection(index) {
+                // Reset any highlighted sections
+                document.querySelectorAll('.feature-tutorial.active').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Set current section
+                currentSectionIndex = index;
+                
+                // Get the section to play
+                let section;
+                if (index === -1) {
+                    section = welcomeSection;
+                } else {
+                    section = sections[index];
+                    section.classList.add('active');
+                    
+                    // Scroll to the section
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // Get text to read
+                const textToRead = getTextFromSection(section);
+                
+                // Use the speech service to read the text
+                if (window.speechService) {
+                    window.speechService.speak(textToRead);
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                    
+                    // Show navigation controls
+                    navControls.classList.add('active');
+                    
+                    // Listen for when speech ends
+                    if (window.speechService.currentUtterance) {
+                        window.speechService.currentUtterance.onend = () => {
+                            isPlaying = false;
+                            updatePlayPauseButton();
+                            navControls.classList.remove('active');
+                        };
+                    }
+                }
+            }
+            
+            // Update play/pause button appearance
+            function updatePlayPauseButton() {
+                playPauseBtn.innerHTML = isPlaying ? '⏸️' : '▶️';
+                playPauseBtn.title = isPlaying ? 'Pause' : 'Play';
+            }
+            
+            // Handle play/pause
+            playPauseBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    // Pause playback
+                    if (window.speechService) {
+                        window.speechService.pause();
+                        isPlaying = false;
+                    }
+                } else {
+                    // If paused, resume or start new
+                    if (window.speechService) {
+                        if (window.speechService.currentUtterance) {
+                            window.speechService.resume();
+                            isPlaying = true;
+                            navControls.classList.add('active');
+                        } else {
+                            // Start from welcome or first section
+                            playSection(currentSectionIndex === -1 ? -1 : currentSectionIndex);
+                        }
+                    }
+                }
+                
+                updatePlayPauseButton();
+            });
+            
+            // Handle previous button
+            prevBtn.addEventListener('click', () => {
+                // Stop current playback
+                if (window.speechService) {
+                    window.speechService.stop();
+                }
+                
+                // Go to previous section
+                const newIndex = Math.max(-1, currentSectionIndex - 1);
+                playSection(newIndex);
+            });
+            
+            // Handle next button
+            nextBtn.addEventListener('click', () => {
+                // Stop current playback
+                if (window.speechService) {
+                    window.speechService.stop();
+                }
+                
+                // Go to next section
+                const newIndex = Math.min(sections.length - 1, currentSectionIndex + 1);
+                playSection(newIndex);
+            });
+            
+            // Individual section narration buttons
+            narrationButtons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    // Stop any current speech
+                    if (window.speechService) {
+                        window.speechService.stop();
+                    }
+                    
+                    // Get the section
+                    const section = button.closest('.feature-tutorial') || button.closest('div');
+                    
+                    // If this is the welcome section
+                    if (!button.closest('.feature-tutorial')) {
+                        playSection(-1);
+                    } else {
+                        // Find the index of this section in our sections array
+                        const sectionIndex = sections.findIndex(s => s === section);
+                        if (sectionIndex !== -1) {
+                            playSection(sectionIndex);
+                        }
+                    }
+                });
+            });
+            
+            // Monitor speech service events
+            if (window.speechService) {
+                // Create a MutationObserver to check for changes to the utterance
+                const checkSpeechStatus = () => {
+                    if (!window.speechService.currentUtterance) {
+                        isPlaying = false;
+                        updatePlayPauseButton();
+                        navControls.classList.remove('active');
+                    }
+                };
+                
+                // Check periodically
+                setInterval(checkSpeechStatus, 500);
+            }
+        });
+    </script>
+</body>
+</html> 

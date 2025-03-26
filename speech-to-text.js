@@ -3,6 +3,7 @@ let recognition = null;
 let isRecording = false;
 let finalTranscript = '';
 let interimTranscript = '';
+let autoDetectLanguage = false;
 
 // DOM Elements - Main Controls
 const textOutput = document.getElementById('text-output');
@@ -17,12 +18,23 @@ const speechWave = document.getElementById('speech-wave');
 
 // DOM Elements - Settings
 const languageSelect = document.getElementById('language-select');
+const autoDetectLangToggle = document.getElementById('auto-detect-language');
 const continuousMode = document.getElementById('continuous-mode');
 const interimResults = document.getElementById('interim-results');
 const autoPunctuate = document.getElementById('auto-punctuate');
 
 // DOM Element - Status Message
 const statusMessage = document.getElementById('statusMessage');
+
+// Language mapping for display
+const languageNames = {
+    'en-US': 'English (US)',
+    'en-GB': 'English (UK)',
+    'hi-IN': 'Hindi',
+    'ta-IN': 'Tamil',
+    'te-IN': 'Telugu',
+    'ml-IN': 'Malayalam'
+};
 
 // Check for browser support
 function checkBrowserSupport() {
@@ -53,7 +65,11 @@ function initSpeechRecognition() {
     // Configure recognition
     recognition.continuous = continuousMode.checked;
     recognition.interimResults = interimResults.checked;
-    recognition.lang = languageSelect.value;
+    
+    // Set language if not in auto-detect mode
+    if (!autoDetectLanguage) {
+        recognition.lang = languageSelect.value;
+    }
     
     // Event handlers
     recognition.onstart = () => {
@@ -66,7 +82,13 @@ function initSpeechRecognition() {
         
         // Change button text for better UX
         startBtn.innerHTML = '<span class="btn-icon">🎤</span> Recording...';
-        showStatus('Started listening. Speak now...', 'info');
+        
+        if (autoDetectLanguage) {
+            showStatus('Started listening with automatic language detection. Speak now...', 'info');
+        } else {
+            const langName = languageNames[recognition.lang] || recognition.lang;
+            showStatus(`Started listening in ${langName}. Speak now...`, 'info');
+        }
     };
     
     recognition.onresult = (event) => {
@@ -97,6 +119,10 @@ function initSpeechRecognition() {
             case 'service-not-allowed':
                 errorMessage = 'Microphone access denied. Please allow microphone access in your browser settings and reload the page.';
                 break;
+            case 'language-not-supported':
+                errorMessage = 'The selected language is not supported. Please try another language.';
+                autoDetectLanguage = false;
+                break;
         }
         
         showStatus(errorMessage, 'error');
@@ -116,6 +142,21 @@ function initSpeechRecognition() {
             resetRecognition();
         }
     };
+    
+    // Handle language detection if enabled
+    if (autoDetectLanguage) {
+        recognition.onspeechstart = () => {
+            updateStatus('Speech detected, identifying language...');
+        };
+        
+        recognition.onlanguagechange = (event) => {
+            // This event might not be supported in all browsers
+            if (event && event.language) {
+                updateLanguageUI(event.language);
+                showStatus(`Language detected: ${languageNames[event.language] || event.language}`, 'success');
+            }
+        };
+    }
 }
 
 // Process recognition results
@@ -125,6 +166,13 @@ function processRecognitionResults(event) {
     // Process results
     for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
+        
+        // Check if language was detected automatically
+        if (autoDetectLanguage && event.results[i].isFinal && event.results[i].length > 0) {
+            if (event.results[i][0].lang) {
+                updateLanguageUI(event.results[i][0].lang);
+            }
+        }
         
         if (event.results[i].isFinal) {
             // Process voice commands first
@@ -145,6 +193,26 @@ function processRecognitionResults(event) {
     
     // Update the text output
     updateTextOutput();
+}
+
+// Update language selection UI when detected
+function updateLanguageUI(detectedLanguage) {
+    // Only update if it's a valid language code
+    if (detectedLanguage && detectedLanguage.length > 1) {
+        // Find the closest matching language in our select options
+        const options = Array.from(languageSelect.options);
+        const closestMatch = options.find(opt => 
+            detectedLanguage.startsWith(opt.value) || opt.value.startsWith(detectedLanguage)
+        );
+        
+        if (closestMatch) {
+            languageSelect.value = closestMatch.value;
+            updateStatus(`Language detected: ${languageNames[closestMatch.value] || closestMatch.value}`);
+        } else {
+            // If no exact match, just show the detected language
+            updateStatus(`Language detected: ${detectedLanguage}`);
+        }
+    }
 }
 
 // Process voice commands
@@ -209,6 +277,99 @@ function processVoiceCommands(text) {
         return true;
     }
     
+    // Hindi commands
+    if (text.includes('नई पंक्ति') || text.includes('nayi pankti')) {
+        finalTranscript += '\n';
+        return true;
+    }
+    
+    if (text.includes('नया पैराग्राफ') || text.includes('naya paragraph')) {
+        finalTranscript += '\n\n';
+        return true;
+    }
+    
+    if (text === 'पूर्ण विराम' || text === 'purna viram') {
+        finalTranscript += '.';
+        return true;
+    }
+    
+    if (text === 'प्रश्न चिह्न' || text === 'prashan chihn') {
+        finalTranscript += '?';
+        return true;
+    }
+    
+    if (text === 'विस्मयादिबोधक चिह्न' || text === 'vismayadibodhak chihn') {
+        finalTranscript += '!';
+        return true;
+    }
+    
+    if (text === 'अल्प विराम' || text === 'alp viram') {
+        finalTranscript += ',';
+        return true;
+    }
+    
+    if (text.includes('मिटा दो') || text.includes('हटा दो') || text.includes('mita do') || text.includes('hata do')) {
+        // Delete last sentence or text
+        const lastIndex = Math.max(
+            finalTranscript.lastIndexOf('.'),
+            finalTranscript.lastIndexOf('?'),
+            finalTranscript.lastIndexOf('!')
+        );
+        
+        if (lastIndex !== -1) {
+            finalTranscript = finalTranscript.substring(0, lastIndex + 1);
+        } else {
+            // If no punctuation, delete the last few words
+            const words = finalTranscript.trim().split(' ');
+            if (words.length > 5) {
+                finalTranscript = words.slice(0, -5).join(' ') + ' ';
+            } else {
+                finalTranscript = '';
+            }
+        }
+        
+        updateTextOutput();
+        return true;
+    }
+    
+    if (text.includes('रुको') || text.includes('बंद करो') || text.includes('ruko') || text.includes('band karo')) {
+        stopRecognition();
+        return true;
+    }
+    
+    // Tamil commands
+    if (text.includes('புதிய வரி') || text.includes('puthiya vari')) {
+        finalTranscript += '\n';
+        return true;
+    }
+    
+    if (text.includes('புதிய பத்தி') || text.includes('puthiya patthi')) {
+        finalTranscript += '\n\n';
+        return true;
+    }
+    
+    // Telugu commands
+    if (text.includes('కొత్త లైన్') || text.includes('kotta line')) {
+        finalTranscript += '\n';
+        return true;
+    }
+    
+    if (text.includes('కొత్త పేరా') || text.includes('kotta para')) {
+        finalTranscript += '\n\n';
+        return true;
+    }
+    
+    // Malayalam commands
+    if (text.includes('പുതിയ വരി') || text.includes('puthiya vari')) {
+        finalTranscript += '\n';
+        return true;
+    }
+    
+    if (text.includes('പുതിയ ഖണ്ഡിക') || text.includes('puthiya khandika')) {
+        finalTranscript += '\n\n';
+        return true;
+    }
+    
     // Not a command
     return false;
 }
@@ -227,7 +388,22 @@ function addPunctuation(text) {
     // This is a very simple implementation, could be improved
     const sentenceEndingWords = ['right', 'okay', 'sure', 'thanks', 'thank you', 'yes', 'no', 'yeah', 'nope'];
     
-    for (const word of sentenceEndingWords) {
+    // Hindi sentence ending words
+    const hindiEndingWords = ['ठीक है', 'अच्छा', 'हां', 'नहीं', 'धन्यवाद', 'बिलकुल'];
+    
+    // Tamil sentence ending words
+    const tamilEndingWords = ['சரி', 'ஆம்', 'இல்லை', 'நன்றி'];
+    
+    // Telugu sentence ending words
+    const teluguEndingWords = ['సరే', 'అవును', 'కాదు', 'ధన్యవాదాలు'];
+    
+    // Malayalam sentence ending words
+    const malayalamEndingWords = ['ശരി', 'അതെ', 'അല്ല', 'നന്ദി'];
+    
+    // Combine all ending words
+    const allEndingWords = [...sentenceEndingWords, ...hindiEndingWords, ...tamilEndingWords, ...teluguEndingWords, ...malayalamEndingWords];
+    
+    for (const word of allEndingWords) {
         if (processedText.toLowerCase().endsWith(word)) {
             processedText += '.';
             break;
@@ -393,6 +569,25 @@ function showStatus(message, type = 'info') {
     }, 3000);
 }
 
+// Toggle automatic language detection
+function toggleAutoDetectLanguage() {
+    autoDetectLanguage = autoDetectLangToggle.checked;
+    
+    if (autoDetectLanguage) {
+        languageSelect.disabled = true;
+        showStatus('Automatic language detection enabled', 'info');
+    } else {
+        languageSelect.disabled = false;
+        showStatus('Manual language selection enabled', 'info');
+    }
+    
+    // If currently recording, restart recognition with new settings
+    if (isRecording) {
+        stopRecognition();
+        startRecognition();
+    }
+}
+
 // Event Listeners
 startBtn.addEventListener('click', startRecognition);
 stopBtn.addEventListener('click', stopRecognition);
@@ -406,7 +601,13 @@ languageSelect.addEventListener('change', () => {
         stopRecognition();
         startRecognition();
     }
+    
+    const selectedLang = languageSelect.value;
+    const langName = languageNames[selectedLang] || selectedLang;
+    showStatus(`Language changed to ${langName}`, 'info');
 });
+
+autoDetectLangToggle.addEventListener('change', toggleAutoDetectLanguage);
 
 continuousMode.addEventListener('change', () => {
     if (isRecording) {

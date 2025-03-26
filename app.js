@@ -87,56 +87,29 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
 });
 
-// Add narration descriptions for each feature
+// Add feature descriptions for tutorial page
 const featureDescriptions = {
-    'object-recognition': 'Object Recognition helps you identify objects in images or through your camera. Click to start identifying objects around you.',
-    'handwriting': 'Handwriting Recognition converts your handwritten text into digital text. Click to start converting your handwriting.',
-    'text-to-speech': 'Text to Speech converts written text into spoken words. Click to hear text read aloud.',
-    'medication-reminder': 'Medication Reminder helps you keep track of your medications. Click to set up your medication schedule.',
-    'color-identifier': 'Color Identifier helps identify colors for colorblind users. Click to start identifying colors.',
-    'magnifier': 'Digital Magnifier helps you enlarge text and images for better visibility. Click to start magnifying.',
-    'qr-scanner': 'QR Scanner helps you scan and read QR codes. Click to start scanning.',
-    'translator': 'Translator helps you translate text between different languages. Click to start translating.'
+    'object-detection': 'Object Recognition helps you identify objects in images or through your camera. It can recognize common household items, furniture, and other objects to help with daily activities.',
+    'handwriting': 'Handwriting Recognition converts your handwritten text into digital text. It can be used to digitize notes, letters, or any handwritten content.',
+    'text-to-speech': 'Text to Speech converts written text into spoken words. It can read articles, books, or any text content aloud with natural-sounding voices.',
+    'speech-to-text': 'Speech to Text converts your voice into written text. It supports multiple languages including Hindi, Tamil, Telugu, and Malayalam.',
+    'medication-reminder': 'Medication Reminder helps you keep track of your medications. Set reminders for different medications, dosages, and schedules.',
+    'color-identifier': 'Color Identifier helps identify colors in images for users with color vision deficiencies. Upload images to identify colors or use your camera in real-time.',
+    'translator': 'Translator helps you translate text between different languages. It supports multiple languages and provides instant translations.',
+    'day-planner': 'Day Planner helps you organize your daily schedule. Create events, set reminders, and manage your calendar easily.',
+    'notes': 'Notes allows you to keep track of important information. Create, edit, and organize your notes in one convenient place.',
+    'emergency-contacts': 'Emergency Contacts provides quick access to important phone numbers. Store and organize contacts for family, medical services, and other emergency numbers.'
 };
 
-// Add hover narration to feature cards
-document.querySelectorAll('.feature-card').forEach(card => {
-    const featureId = card.getAttribute('href').replace('.html', '');
-    
-    card.addEventListener('mouseenter', () => {
-        if (featureDescriptions[featureId]) {
-            window.speechService.speak(featureDescriptions[featureId]);
-        }
-    });
-
-    card.addEventListener('mouseleave', () => {
-        window.speechService.stop();
-    });
-
-    // Add touch support for mobile devices
-    card.addEventListener('touchstart', (e) => {
-        if (featureDescriptions[featureId]) {
-            e.preventDefault(); // Prevent immediate navigation
-            window.speechService.speak(featureDescriptions[featureId]);
-            // Allow navigation after narration starts
-            setTimeout(() => {
-                window.location.href = card.href;
-            }, 1500);
-        }
-    });
-});
-
-// Add a global narration button
-const narrationBtn = document.createElement('button');
-narrationBtn.className = 'narration-btn';
-narrationBtn.innerHTML = '🔊';
-narrationBtn.title = 'Read Page Description';
-document.body.appendChild(narrationBtn);
-
-narrationBtn.addEventListener('click', () => {
-    const pageDescription = 'Welcome to Elder Ease. This application provides various accessibility features to help make technology easier to use. Click on any feature to get started.';
-    window.speechService.speak(pageDescription);
-});
+// Add a help button that links to the tutorial page (except on the tutorial page itself)
+if (!window.location.pathname.includes('tutorial.html')) {
+    const helpBtn = document.createElement('a');
+    helpBtn.className = 'help-btn';
+    helpBtn.innerHTML = '❓';
+    helpBtn.title = 'Help & Tutorials';
+    helpBtn.href = 'tutorial.html';
+    document.body.appendChild(helpBtn);
+}
 
 // Update auth buttons based on login state
 function updateAuthButtons() {
