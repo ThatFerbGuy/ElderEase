@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Profile - ElderEase</title>
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ElderEase</h1>
+            <p class="tagline">Making technology accessible for everyone</p>
+        </header>
+
+        <div class="auth-buttons">
+            <!-- Will be populated by JavaScript -->
+        </div>
+
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-image-container">
+                    <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Image" class="profile-image">
+                </div>
+                <h2>Patient Profile</h2>
+            </div>
+            
+            <div id="profileDetails" class="profile-details">
+                <!-- Profile details will be loaded here -->
+            </div>
+        </div>
+
+        <footer>
+            <p>ElderEase - Empowering Independence Through Technology</p>
+        </footer>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="profileEditModal" class="modal">
+        <div class="modal-content profile-edit-modal">
+            <span class="close">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="profileEditForm">
+                <div class="form-group">
+                    <label for="editFullName">Full Name</label>
+                    <input type="text" id="editFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAge">Age</label>
+                    <input type="number" id="editAge" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBloodType">Blood Type</label>
+                    <select id="editBloodType" required>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editDiseases">Medical Conditions</label>
+                    <textarea id="editDiseases" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editPrescriptions">Current Medications</label>
+                    <textarea id="editPrescriptions" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Address</label>
+                    <textarea id="editAddress" rows="2" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editEmergencyContact">Emergency Contact Name</label>
+                    <input type="text" id="editEmergencyContact" required>
+                </div>
+                <div class="form-group">
+                    <label for="editEmergencyPhone">Emergency Contact Phone</label>
+                    <input type="tel" id="editEmergencyPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="profileImageUpload">Profile Image</label>
+                    <input type="file" id="profileImageUpload" accept="image/*">
+                </div>
+                <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginName">Username</label>
+                    <input type="text" id="loginName" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Username</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+    <script src="app.js"></script>
+<script src="accessibility.js"></script>
+</body>
+</html> 

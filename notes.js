@@ -29,15 +29,22 @@ function initNotes() {
     resetEditor();
 }
 
-// Load notes from local storage
+// Load notes from storage
 function loadNotesFromStorage() {
-    const storedNotes = localStorage.getItem('elderEaseNotes');
+    // Use sessionStorage for authenticated user data
+    const storedNotes = sessionStorage.getItem('notes');
     notes = storedNotes ? JSON.parse(storedNotes) : [];
 }
 
-// Save notes to local storage
+// Save notes to storage
 function saveNotesToStorage() {
-    localStorage.setItem('elderEaseNotes', JSON.stringify(notes));
+    // Save to sessionStorage
+    sessionStorage.setItem('notes', JSON.stringify(notes));
+    
+    // Use saveUserData from auth-check.js to save to user-specific localStorage
+    if (typeof saveUserData === 'function') {
+        saveUserData('notes', notes);
+    }
 }
 
 // Render the notes list in the sidebar

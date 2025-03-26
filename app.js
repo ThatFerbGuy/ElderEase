@@ -117,9 +117,16 @@ function updateAuthButtons() {
         authButtons.innerHTML = `
             <span class="welcome-text">Welcome, ${currentUser.name}</span>
             <button id="logoutBtn" class="auth-btn">Logout</button>
+            <a href="profile.html" class="profile-icon profile-icon-top-right">👤</a>
         `;
         // Add logout handler
         document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        
+        // Add click event to profile icon for popup
+        document.querySelector('.profile-icon').addEventListener('click', function(e) {
+            e.preventDefault();
+            showProfilePopup(e);
+        });
     } else {
         authButtons.innerHTML = `
             <button id="loginBtn" class="auth-btn">Login</button>
@@ -129,6 +136,71 @@ function updateAuthButtons() {
         document.getElementById('loginBtn').addEventListener('click', () => loginModal.style.display = 'block');
         document.getElementById('signupBtn').addEventListener('click', () => signupModal.style.display = 'block');
     }
+}
+
+// Show profile popup
+function showProfilePopup(event) {
+    // Remove existing popup if any
+    document.getElementById('profileDetailsPopup')?.remove();
+    
+    // Get current profile data
+    const currentProfile = JSON.parse(localStorage.getItem('currentProfile')) || {};
+    
+    // Create popup
+    const popup = document.createElement('div');
+    popup.id = 'profileDetailsPopup';
+    popup.className = 'profile-popup';
+    
+    // Populate popup with profile data
+    popup.innerHTML = `
+        <div class="popup-header">
+            <h3>${currentProfile.fullName || 'Patient'}'s Profile</h3>
+            <a href="profile.html" class="edit-profile-btn popup-edit-btn">Edit</a>
+        </div>
+        <div class="popup-content">
+            <div class="popup-detail">
+                <strong>Full Name:</strong> ${currentProfile.fullName || 'Not provided'}
+            </div>
+            <div class="popup-detail">
+                <strong>Age:</strong> ${currentProfile.age || 'Not provided'}
+            </div>
+            <div class="popup-detail">
+                <strong>Blood Type:</strong> ${currentProfile.bloodType || 'Not provided'}
+            </div>
+            <div class="popup-detail">
+                <strong>Medical Conditions:</strong> ${currentProfile.diseases || 'None'}
+            </div>
+            <div class="popup-detail">
+                <strong>Current Medications:</strong> ${currentProfile.prescriptions || 'None'}
+            </div>
+            <div class="popup-detail">
+                <strong>Address:</strong> ${currentProfile.address || 'Not provided'}
+            </div>
+            <div class="popup-detail">
+                <strong>Emergency Contact:</strong> ${currentProfile.emergencyContact || 'Not provided'}
+            </div>
+            <div class="popup-detail">
+                <strong>Emergency Phone:</strong> ${currentProfile.emergencyPhone || 'Not provided'}
+            </div>
+        </div>
+    `;
+    
+    // Position popup relative to icon
+    const rect = event.target.getBoundingClientRect();
+    popup.style.top = `${rect.bottom + window.scrollY + 10}px`;
+    popup.style.right = `${window.innerWidth - rect.right - window.scrollX}px`;
+    
+    // Add to document
+    document.body.appendChild(popup);
+    
+    // Close popup when clicking outside
+    document.addEventListener('click', function closePopup(e) {
+        if (e.target.closest('.profile-icon') || e.target.closest('#profileDetailsPopup')) {
+            return;
+        }
+        popup.remove();
+        document.removeEventListener('click', closePopup);
+    });
 }
 
 // Handle login
@@ -144,6 +216,28 @@ loginForm.addEventListener('submit', (e) => {
     if (user) {
         currentUser = user;
         localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Load user-specific profile if it exists
+        const userProfile = JSON.parse(localStorage.getItem(`profile_${user.name}`));
+        if (userProfile) {
+            localStorage.setItem('currentProfile', JSON.stringify(userProfile));
+        } else {
+            // Create default profile if none exists
+            const defaultProfile = {
+                fullName: user.name,
+                age: '',
+                bloodType: 'A+',
+                diseases: '',
+                prescriptions: '',
+                address: '',
+                emergencyContact: '',
+                emergencyPhone: '',
+                profileImage: 'https://via.placeholder.com/150'
+            };
+            localStorage.setItem(`profile_${user.name}`, JSON.stringify(defaultProfile));
+            localStorage.setItem('currentProfile', JSON.stringify(defaultProfile));
+        }
+        
         loginModal.style.display = 'none';
         loginForm.reset();
         updateAuthButtons();
@@ -173,6 +267,21 @@ signupForm.addEventListener('submit', (e) => {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     
+    // Create default profile for new user
+    const defaultProfile = {
+        fullName: name,
+        age: '',
+        bloodType: 'A+',
+        diseases: '',
+        prescriptions: '',
+        address: '',
+        emergencyContact: '',
+        emergencyPhone: '',
+        profileImage: 'https://via.placeholder.com/150'
+    };
+    localStorage.setItem(`profile_${name}`, JSON.stringify(defaultProfile));
+    localStorage.setItem('currentProfile', JSON.stringify(defaultProfile));
+    
     // Auto login after signup
     currentUser = newUser;
     localStorage.setItem('currentUser', JSON.stringify(newUser));
@@ -185,8 +294,13 @@ signupForm.addEventListener('submit', (e) => {
 
 // Handle logout
 function handleLogout() {
+    // Clear profile data
+    localStorage.removeItem('currentProfile');
+    
+    // Clear user data
     currentUser = null;
     localStorage.removeItem('currentUser');
+    
     updateAuthButtons();
     showMessage('Logged out successfully', 'success');
 }

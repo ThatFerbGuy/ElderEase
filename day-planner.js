@@ -48,9 +48,10 @@ function initCalendar() {
     setInterval(checkReminders, 60000);
 }
 
-// Load events from local storage
+// Load events from storage
 function loadEventsFromStorage() {
-    const storedEvents = localStorage.getItem('elderEaseEvents');
+    // Use sessionStorage for authenticated user data
+    const storedEvents = sessionStorage.getItem('events');
     events = storedEvents ? JSON.parse(storedEvents) : [];
     
     // Convert date strings back to Date objects
@@ -59,17 +60,24 @@ function loadEventsFromStorage() {
     });
     
     // Also load any pending reminders
-    const storedReminders = localStorage.getItem('elderEaseReminders');
+    const storedReminders = sessionStorage.getItem('reminders') || localStorage.getItem('elderEaseReminders');
     reminders = storedReminders ? JSON.parse(storedReminders) : [];
 }
 
-// Save events to local storage
+// Save events to storage
 function saveEventsToStorage() {
-    localStorage.setItem('elderEaseEvents', JSON.stringify(events));
+    // Save to sessionStorage
+    sessionStorage.setItem('events', JSON.stringify(events));
+    
+    // Use saveUserData from auth-check.js to save to user-specific localStorage
+    if (typeof saveUserData === 'function') {
+        saveUserData('events', events);
+    }
 }
 
-// Save reminders to local storage
+// Save reminders to storage
 function saveRemindersToStorage() {
+    sessionStorage.setItem('reminders', JSON.stringify(reminders));
     localStorage.setItem('elderEaseReminders', JSON.stringify(reminders));
 }
 

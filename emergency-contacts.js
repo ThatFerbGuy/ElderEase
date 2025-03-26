@@ -34,12 +34,13 @@ function initContacts() {
     setupEventListeners();
 }
 
-// Load contacts from local storage
+// Load contacts from storage
 function loadContactsFromStorage() {
-    const storedContacts = localStorage.getItem('elderEaseContacts');
+    // Use sessionStorage for authenticated user data
+    const storedContacts = sessionStorage.getItem('contacts');
     contacts = storedContacts ? JSON.parse(storedContacts) : [];
     
-    // If no contacts exist, add some example contacts for Alzheimer's patients
+    // If no contacts exist, add some example contacts for elderly users
     if (contacts.length === 0) {
         addExampleContacts();
     }
@@ -90,9 +91,15 @@ function addExampleContacts() {
     saveContactsToStorage();
 }
 
-// Save contacts to local storage
+// Save contacts to storage
 function saveContactsToStorage() {
-    localStorage.setItem('elderEaseContacts', JSON.stringify(contacts));
+    // Save to sessionStorage
+    sessionStorage.setItem('contacts', JSON.stringify(contacts));
+    
+    // Use saveUserData from auth-check.js to save to user-specific localStorage
+    if (typeof saveUserData === 'function') {
+        saveUserData('contacts', contacts);
+    }
 }
 
 // Filter and sort contacts based on current filter and search

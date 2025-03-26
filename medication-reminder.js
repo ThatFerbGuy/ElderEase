@@ -26,7 +26,7 @@ const alertEnabled = document.getElementById('alertEnabled');
 const statusMessage = document.getElementById('statusMessage');
 
 // State
-let medications = JSON.parse(localStorage.getItem('medications') || '[]');
+let medications = JSON.parse(sessionStorage.getItem('medications') || '[]');
 let reminders = [];
 let activeReminders = new Set(); // Track active reminders to avoid duplicates
 let alertSettings = JSON.parse(localStorage.getItem('alertSettings') || '{"volume": 0.5, "enabled": true}');
@@ -480,7 +480,11 @@ function setupNotifications() {
 
 // Utility functions
 function saveMedications() {
-    localStorage.setItem('medications', JSON.stringify(medications));
+    sessionStorage.setItem('medications', JSON.stringify(medications));
+    // Use saveUserData from auth-check.js to save to user-specific localStorage
+    if (typeof saveUserData === 'function') {
+        saveUserData('medications', medications);
+    }
 }
 
 function saveAlertSettings() {
