@@ -1,11 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-color-theme="blue">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient Profile - ElderEase</title>
     <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-light);
+            backdrop-filter: blur(10px);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 30px;
+        }
+        
+        .profile-image-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            background: #f5f5f5;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .profile-image-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .profile-image-upload:hover {
+            transform: scale(1.1);
+        }
+        
+        .profile-title {
+            flex-grow: 1;
+        }
+        
+        .profile-title h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .edit-profile-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .edit-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .profile-card {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .profile-card h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .profile-card p {
+            margin: 5px 0;
+            line-height: 1.5;
+        }
+        
+        .card-icon {
+            background: var(--primary-gradient);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+        }
+        
+        /* Modal improvements */
+        .profile-edit-modal {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding-bottom: 30px; /* Add padding to ensure the submit button is visible */
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scrolling for the entire modal */
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            position: relative;
+            background: var(--card-bg);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-medium);
+            width: 90%;
+            max-width: 600px;
+            animation: scaleIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Form validation styles */
+        input:invalid, select:invalid, textarea:invalid {
+            border: 1px solid var(--ios-red);
+        }
+        
+        .error-message {
+            color: var(--ios-red);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        input:invalid + .error-message,
+        select:invalid + .error-message,
+        textarea:invalid + .error-message {
+            display: block;
+        }
+        
+        .invalid-feedback {
+            color: var(--ios-red);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* Form group margin to provide space for error messages */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .edit-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .edit-form-full {
+            grid-column: 1 / -1;
+        }
+        
+        .profile-image-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--primary-color);
+        }
+        
+        .image-upload-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -22,12 +255,29 @@
             <div class="profile-header">
                 <div class="profile-image-container">
                     <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Image" class="profile-image">
+                    <div class="profile-image-upload" id="uploadProfileImageBtn">
+                        <i class="fas fa-camera"></i>
+                    </div>
                 </div>
-                <h2>Patient Profile</h2>
+                <div class="profile-title">
+                    <h2>Patient Profile</h2>
+                    <p>Manage your health information and emergency contacts</p>
+                </div>
+                <button id="editProfileBtn" class="edit-profile-btn">
+                    <i class="fas fa-pen"></i> Edit Profile
+                </button>
             </div>
             
             <div id="profileDetails" class="profile-details">
-                <!-- Profile details will be loaded here -->
+                <!-- Profile details will be loaded here in a grid layout -->
+                <!-- Example structure:
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-user"></i></div> Personal Information</h3>
+                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Age:</strong> 65</p>
+                    <p><strong>Blood Type:</strong> A+</p>
+                </div>
+                -->
             </div>
         </div>
 
@@ -41,53 +291,71 @@
         <div class="modal-content profile-edit-modal">
             <span class="close">&times;</span>
             <h2>Edit Profile</h2>
+            
             <form id="profileEditForm">
-                <div class="form-group">
-                    <label for="editFullName">Full Name</label>
-                    <input type="text" id="editFullName" required>
+                <div class="profile-image-upload-container edit-form-full">
+                    <img id="editProfileImagePreview" src="https://via.placeholder.com/150" alt="Profile Preview" class="profile-image-preview">
+                    <label for="profileImageUpload" class="image-upload-btn">
+                        <i class="fas fa-camera"></i> Choose Photo
+                    </label>
+                    <input type="file" id="profileImageUpload" accept="image/*" style="display: none;">
                 </div>
-                <div class="form-group">
-                    <label for="editAge">Age</label>
-                    <input type="number" id="editAge" required>
+                
+                <div class="edit-form-grid">
+                    <div class="form-group">
+                        <label for="editFullName">Full Name</label>
+                        <input type="text" id="editFullName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editAge">Age</label>
+                        <input type="number" id="editAge" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editBloodType">Blood Type</label>
+                        <select id="editBloodType" required>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editEmergencyContact">Emergency Contact Name</label>
+                        <input type="text" id="editEmergencyContact" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editEmergencyPhone">Emergency Contact Phone</label>
+                        <input type="tel" id="editEmergencyPhone" required>
+                    </div>
+                    
+                    <div class="form-group edit-form-full">
+                        <label for="editAddress">Address</label>
+                        <textarea id="editAddress" rows="2" required></textarea>
+                    </div>
+                    
+                    <div class="form-group edit-form-full">
+                        <label for="editDiseases">Medical Conditions</label>
+                        <textarea id="editDiseases" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group edit-form-full">
+                        <label for="editPrescriptions">Current Medications</label>
+                        <textarea id="editPrescriptions" rows="3"></textarea>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="editBloodType">Blood Type</label>
-                    <select id="editBloodType" required>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
+                
+                <div class="form-buttons">
+                    <button type="button" id="cancelEditBtn" class="secondary-btn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save Changes</button>
                 </div>
-                <div class="form-group">
-                    <label for="editDiseases">Medical Conditions</label>
-                    <textarea id="editDiseases" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editPrescriptions">Current Medications</label>
-                    <textarea id="editPrescriptions" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editAddress">Address</label>
-                    <textarea id="editAddress" rows="2" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="editEmergencyContact">Emergency Contact Name</label>
-                    <input type="text" id="editEmergencyContact" required>
-                </div>
-                <div class="form-group">
-                    <label for="editEmergencyPhone">Emergency Contact Phone</label>
-                    <input type="tel" id="editEmergencyPhone" required>
-                </div>
-                <div class="form-group">
-                    <label for="profileImageUpload">Profile Image</label>
-                    <input type="file" id="profileImageUpload" accept="image/*">
-                </div>
-                <button type="submit" class="submit-btn">Save Changes</button>
             </form>
         </div>
     </div>
@@ -132,6 +400,332 @@
 
     <script src="profile.js"></script>
     <script src="app.js"></script>
-<script src="accessibility.js"></script>
+    <script src="accessibility.js"></script>
+    <script src="theme-controls.js"></script>
+    <script>
+        // Handle profile image upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImageUpload = document.getElementById('profileImageUpload');
+            const uploadProfileImageBtn = document.getElementById('uploadProfileImageBtn');
+            const editProfileImagePreview = document.getElementById('editProfileImagePreview');
+            const profileImage = document.getElementById('profileImage');
+            
+            // Load profile image from session storage if available
+            const savedProfileImage = sessionStorage.getItem('profileImage');
+            if (savedProfileImage) {
+                profileImage.src = savedProfileImage;
+                editProfileImagePreview.src = savedProfileImage;
+            }
+            
+            // Open file dialog when the camera icon is clicked
+            uploadProfileImageBtn.addEventListener('click', function() {
+                document.getElementById('profileImageUpload').click();
+            });
+            
+            // Preview the selected image
+            profileImageUpload.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        editProfileImagePreview.src = e.target.result;
+                        profileImage.src = e.target.result;
+                        
+                        // Save to session storage
+                        sessionStorage.setItem('profileImage', e.target.result);
+                    };
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+            
+            // Handle edit profile button
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const profileEditModal = document.getElementById('profileEditModal');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            const closeBtn = document.querySelector('#profileEditModal .close');
+            
+            editProfileBtn.addEventListener('click', function() {
+                profileEditModal.style.display = 'block';
+            });
+            
+            cancelEditBtn.addEventListener('click', function() {
+                profileEditModal.style.display = 'none';
+            });
+            
+            closeBtn.addEventListener('click', function() {
+                profileEditModal.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside of it
+            window.addEventListener('click', function(event) {
+                if (event.target === profileEditModal) {
+                    profileEditModal.style.display = 'none';
+                }
+            });
+            
+            // Example implementation of the profile details grid layout
+            // This should ideally be populated from your data source
+            const profileDetails = document.getElementById('profileDetails');
+            
+            // Load profile data from session storage or use defaults
+            const profileData = {
+                fullName: sessionStorage.getItem('fullName') || 'John Doe',
+                age: sessionStorage.getItem('age') || '65',
+                bloodType: sessionStorage.getItem('bloodType') || 'A+',
+                address: sessionStorage.getItem('address') || '123 Elder Street, Anytown, USA',
+                diseases: sessionStorage.getItem('diseases') || 'Hypertension, Type 2 Diabetes',
+                prescriptions: sessionStorage.getItem('prescriptions') || 'Metformin 500mg, Lisinopril 10mg',
+                emergencyContact: sessionStorage.getItem('emergencyContact') || 'Jane Doe',
+                emergencyPhone: sessionStorage.getItem('emergencyPhone') || '(555) 123-4567'
+            };
+            
+            // Populate edit form with existing data
+            document.getElementById('editFullName').value = profileData.fullName;
+            document.getElementById('editAge').value = profileData.age;
+            document.getElementById('editBloodType').value = profileData.bloodType;
+            document.getElementById('editAddress').value = profileData.address;
+            document.getElementById('editDiseases').value = profileData.diseases;
+            document.getElementById('editPrescriptions').value = profileData.prescriptions;
+            document.getElementById('editEmergencyContact').value = profileData.emergencyContact;
+            document.getElementById('editEmergencyPhone').value = profileData.emergencyPhone;
+            
+            // Create profile cards
+            profileDetails.innerHTML = `
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-user"></i></div> Personal Information</h3>
+                    <p><strong>Name:</strong> ${profileData.fullName}</p>
+                    <p><strong>Age:</strong> ${profileData.age}</p>
+                    <p><strong>Blood Type:</strong> ${profileData.bloodType}</p>
+                </div>
+                
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-map-marker-alt"></i></div> Address</h3>
+                    <p>${profileData.address}</p>
+                </div>
+                
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-heartbeat"></i></div> Medical Conditions</h3>
+                    <p>${profileData.diseases}</p>
+                </div>
+                
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-pills"></i></div> Current Medications</h3>
+                    <p>${profileData.prescriptions}</p>
+                </div>
+                
+                <div class="profile-card">
+                    <h3><div class="card-icon"><i class="fas fa-phone"></i></div> Emergency Contact</h3>
+                    <p><strong>Name:</strong> ${profileData.emergencyContact}</p>
+                    <p><strong>Phone:</strong> ${profileData.emergencyPhone}</p>
+                </div>
+            `;
+            
+            // Form validation functions
+            function showError(input, message) {
+                const formGroup = input.parentElement;
+                let errorElement = formGroup.querySelector('.invalid-feedback');
+                
+                if (!errorElement) {
+                    errorElement = document.createElement('div');
+                    errorElement.className = 'invalid-feedback';
+                    formGroup.appendChild(errorElement);
+                }
+                
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                input.classList.add('is-invalid');
+            }
+            
+            function clearError(input) {
+                const formGroup = input.parentElement;
+                const errorElement = formGroup.querySelector('.invalid-feedback');
+                
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+                
+                input.classList.remove('is-invalid');
+            }
+            
+            function validateInput(input) {
+                if (input.type === 'tel') {
+                    // Phone number validation (simple format check)
+                    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+                    if (!phoneRegex.test(input.value.trim())) {
+                        showError(input, 'Please enter a valid phone number');
+                        return false;
+                    }
+                } else if (input.type === 'number') {
+                    // Age validation (between 0 and 120)
+                    if (input.value < 0 || input.value > 120) {
+                        showError(input, 'Age must be between 0 and 120');
+                        return false;
+                    }
+                } else if (input.type === 'text' && input.id === 'editFullName') {
+                    // Name validation (not empty and at least 2 characters)
+                    if (input.value.trim().length < 2) {
+                        showError(input, 'Name must be at least 2 characters');
+                        return false;
+                    }
+                } else if (input.required && input.value.trim() === '') {
+                    showError(input, 'This field is required');
+                    return false;
+                }
+                
+                clearError(input);
+                return true;
+            }
+            
+            // Add real-time validation to form fields
+            const formInputs = document.querySelectorAll('#profileEditForm input, #profileEditForm select, #profileEditForm textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateInput(this);
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        validateInput(this);
+                    }
+                });
+            });
+            
+            // Handle form submission with validation
+            const profileEditForm = document.getElementById('profileEditForm');
+            profileEditForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate all form fields
+                let isValid = true;
+                formInputs.forEach(input => {
+                    if (!validateInput(input)) {
+                        isValid = false;
+                    }
+                });
+                
+                if (!isValid) {
+                    // Scroll to the first invalid field
+                    const firstInvalid = document.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return;
+                }
+                
+                // Get form values
+                const formData = {
+                    fullName: document.getElementById('editFullName').value,
+                    age: document.getElementById('editAge').value,
+                    bloodType: document.getElementById('editBloodType').value,
+                    address: document.getElementById('editAddress').value,
+                    diseases: document.getElementById('editDiseases').value,
+                    prescriptions: document.getElementById('editPrescriptions').value,
+                    emergencyContact: document.getElementById('editEmergencyContact').value,
+                    emergencyPhone: document.getElementById('editEmergencyPhone').value
+                };
+                
+                // Save to session storage
+                Object.keys(formData).forEach(key => {
+                    sessionStorage.setItem(key, formData[key]);
+                });
+                
+                // Update profile cards
+                profileDetails.innerHTML = `
+                    <div class="profile-card">
+                        <h3><div class="card-icon"><i class="fas fa-user"></i></div> Personal Information</h3>
+                        <p><strong>Name:</strong> ${formData.fullName}</p>
+                        <p><strong>Age:</strong> ${formData.age}</p>
+                        <p><strong>Blood Type:</strong> ${formData.bloodType}</p>
+                    </div>
+                    
+                    <div class="profile-card">
+                        <h3><div class="card-icon"><i class="fas fa-map-marker-alt"></i></div> Address</h3>
+                        <p>${formData.address}</p>
+                    </div>
+                    
+                    <div class="profile-card">
+                        <h3><div class="card-icon"><i class="fas fa-heartbeat"></i></div> Medical Conditions</h3>
+                        <p>${formData.diseases}</p>
+                    </div>
+                    
+                    <div class="profile-card">
+                        <h3><div class="card-icon"><i class="fas fa-pills"></i></div> Current Medications</h3>
+                        <p>${formData.prescriptions}</p>
+                    </div>
+                    
+                    <div class="profile-card">
+                        <h3><div class="card-icon"><i class="fas fa-phone"></i></div> Emergency Contact</h3>
+                        <p><strong>Name:</strong> ${formData.emergencyContact}</p>
+                        <p><strong>Phone:</strong> ${formData.emergencyPhone}</p>
+                    </div>
+                `;
+                
+                // Show success message
+                const statusMessage = document.createElement('div');
+                statusMessage.className = 'message message-success';
+                statusMessage.textContent = 'Profile updated successfully!';
+                document.querySelector('.profile-container').appendChild(statusMessage);
+                
+                // Remove message after 3 seconds
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 3000);
+                
+                // Close modal
+                profileEditModal.style.display = 'none';
+            });
+            
+            // Also validate login and signup forms
+            function setupFormValidation(formId) {
+                const form = document.getElementById(formId);
+                if (!form) return;
+                
+                const inputs = form.querySelectorAll('input');
+                
+                inputs.forEach(input => {
+                    input.addEventListener('blur', function() {
+                        validateInput(this);
+                    });
+                    
+                    input.addEventListener('input', function() {
+                        if (this.classList.contains('is-invalid')) {
+                            validateInput(this);
+                        }
+                    });
+                });
+                
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    let isValid = true;
+                    inputs.forEach(input => {
+                        if (!validateInput(input)) {
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // In a real app, you would handle the login/signup here
+                        if (formId === 'loginForm') {
+                            alert('Login successful!');
+                        } else if (formId === 'signupForm') {
+                            alert('Account created successfully!');
+                        }
+                        
+                        // Close modal
+                        const modal = this.closest('.modal');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            // Setup validation for login and signup forms
+            setupFormValidation('loginForm');
+            setupFormValidation('signupForm');
+        });
+    </script>
 </body>
 </html> 

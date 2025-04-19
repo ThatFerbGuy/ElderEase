@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-color-theme="blue">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,13 @@
     <script src="auth-check.js"></script>
 </head>
 <body>
+    <!-- Floating background elements -->
+    <div class="background-elements">
+        <div class="floating-bubble"></div>
+        <div class="floating-bubble"></div>
+        <div class="floating-bubble"></div>
+    </div>
+    
     <div class="container">
         <header>
             <h1>ElderEase</h1>
@@ -93,6 +100,11 @@
         </footer>
     </div>
 
+    <!-- Help Button -->
+    <a href="help.html" class="help-btn" title="Help & Tutorials">
+        <i class="fas fa-question"></i>
+    </a>
+
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
@@ -134,5 +146,6 @@
     <script src="services/speech.js"></script>
     <script src="app.js"></script>
     <script src="accessibility.js"></script>
+    <script src="theme-controls.js"></script>
 </body>
 </html> 

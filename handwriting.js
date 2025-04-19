@@ -103,7 +103,7 @@ function stopDrawing() {
     currentPath = [];
 }
 
-// Simplified image preprocessing for elder use
+// Enhanced image preprocessing for better recognition
 async function preprocessImage(imageData) {
     try {
         // Create a temporary canvas for preprocessing
@@ -115,19 +115,106 @@ async function preprocessImage(imageData) {
         // Draw the current canvas content
         tempCtx.drawImage(canvas, 0, 0);
         
-        // Simple contrast enhancement
+        // Get image data
         const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
         const data = imageData.data;
         
-        // Basic contrast enhancement to make text clearer
+        // Step 1: Convert to grayscale and calculate histogram
+        const histogram = new Array(256).fill(0);
         for (let i = 0; i < data.length; i += 4) {
-            // Convert to grayscale
-            const gray = Math.round((data[i] + data[i + 1] + data[i + 2]) / 3);
+            const gray = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]);
+            data[i] = data[i + 1] = data[i + 2] = gray;
+            histogram[gray]++;
+        }
+        
+        // Step 2: Calculate optimal threshold using Otsu's method
+        let totalPixels = data.length / 4;
+        let sum = 0;
+        for (let i = 0; i < 256; i++) {
+            sum += i * histogram[i];
+        }
+        
+        let sumB = 0;
+        let wB = 0;
+        let wF = 0;
+        let maxVariance = 0;
+        let threshold = 0;
+        
+        for (let t = 0; t < 256; t++) {
+            wB += histogram[t];
+            if (wB === 0) continue;
             
-            // Simple threshold for clearer writing
-            const newValue = gray < 150 ? 0 : 255;
+            wF = totalPixels - wB;
+            if (wF === 0) break;
             
-            data[i] = data[i + 1] = data[i + 2] = newValue;
+            sumB += t * histogram[t];
+            let mB = sumB / wB;
+            let mF = (sum - sumB) / wF;
+            
+            let variance = wB * wF * Math.pow(mB - mF, 2);
+            if (variance > maxVariance) {
+                maxVariance = variance;
+                threshold = t;
+            }
+        }
+        
+        // Step 3: Apply adaptive thresholding and noise reduction
+        const width = tempCanvas.width;
+        const blockSize = 15; // Size of the local neighborhood for adaptive threshold
+        
+        for (let y = 0; y < tempCanvas.height; y++) {
+            for (let x = 0; x < width; x++) {
+                const idx = (y * width + x) * 4;
+                
+                // Calculate local threshold
+                let sum = 0;
+                let count = 0;
+                
+                for (let dy = -blockSize; dy <= blockSize; dy++) {
+                    for (let dx = -blockSize; dx <= blockSize; dx++) {
+                        const ny = y + dy;
+                        const nx = x + dx;
+                        
+                        if (ny >= 0 && ny < tempCanvas.height && nx >= 0 && nx < width) {
+                            sum += data[(ny * width + nx) * 4];
+                            count++;
+                        }
+                    }
+                }
+                
+                const localThreshold = (sum / count) * 0.95; // 95% of local mean
+                
+                // Apply threshold and reduce noise
+                const pixel = data[idx];
+                data[idx] = data[idx + 1] = data[idx + 2] = pixel < localThreshold ? 0 : 255;
+            }
+        }
+        
+        // Step 4: Stroke enhancement
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i] === 0) { // If it's a black pixel (part of the writing)
+                // Enhance stroke edges
+                const x = (i / 4) % width;
+                const y = Math.floor((i / 4) / width);
+                
+                // Check surrounding pixels
+                let blackNeighbors = 0;
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        const ny = y + dy;
+                        const nx = x + dx;
+                        if (ny >= 0 && ny < tempCanvas.height && nx >= 0 && nx < width) {
+                            const nidx = (ny * width + nx) * 4;
+                            if (data[nidx] === 0) blackNeighbors++;
+                        }
+                    }
+                }
+                
+                // If pixel is isolated or has few neighbors, likely noise
+                if (blackNeighbors <= 2) {
+                    data[i] = data[i + 1] = data[i + 2] = 255; // Remove noise
+                }
+            }
         }
         
         tempCtx.putImageData(imageData, 0, 0);

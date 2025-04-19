@@ -184,15 +184,93 @@ function processRecognitionResults(event) {
             // Add punctuation if option is enabled
             let processedText = autoPunctuate.checked ? addPunctuation(transcript) : transcript;
             
-            // Append to final transcript
-            finalTranscript += ' ' + processedText;
+            // Check for duplicates before adding to final transcript
+            if (!isDuplicateText(processedText)) {
+                // Append to final transcript with proper spacing
+                finalTranscript = appendWithSpacing(finalTranscript, processedText);
+            }
         } else {
-            interimTranscript += transcript;
+            // For interim results, only update if significantly different
+            if (!isSimilarToFinal(transcript)) {
+                interimTranscript = transcript;
+            }
         }
     }
     
     // Update the text output
     updateTextOutput();
+}
+
+// Helper function to check for duplicate text
+function isDuplicateText(newText) {
+    if (!finalTranscript) return false;
+    
+    // Normalize both texts for comparison
+    const normalizedNew = newText.trim().toLowerCase();
+    const normalizedFinal = finalTranscript.trim().toLowerCase();
+    
+    // Check if the new text is already in the final transcript
+    if (normalizedFinal.includes(normalizedNew)) {
+        return true;
+    }
+    
+    // Check for partial overlaps
+    const words = normalizedNew.split(/\s+/);
+    if (words.length > 3) {
+        // If more than 3 words, check if most of them are already present
+        const existingWords = normalizedFinal.split(/\s+/);
+        const matchingWords = words.filter(word => 
+            existingWords.includes(word) && word.length > 3
+        );
+        return matchingWords.length > words.length * 0.7; // 70% overlap threshold
+    }
+    
+    return false;
+}
+
+// Helper function to check if interim result is similar to final
+function isSimilarToFinal(interimText) {
+    if (!finalTranscript) return false;
+    
+    const normalizedInterim = interimText.trim().toLowerCase();
+    const normalizedFinal = finalTranscript.trim().toLowerCase();
+    
+    // Check if interim text is just a subset of final text
+    if (normalizedFinal.includes(normalizedInterim)) {
+        return true;
+    }
+    
+    // Check for significant overlap
+    const interimWords = normalizedInterim.split(/\s+/);
+    const finalWords = normalizedFinal.split(/\s+/);
+    
+    if (interimWords.length > 2) {
+        const matchingWords = interimWords.filter(word => 
+            finalWords.includes(word) && word.length > 3
+        );
+        return matchingWords.length > interimWords.length * 0.6; // 60% overlap threshold
+    }
+    
+    return false;
+}
+
+// Helper function to append text with proper spacing
+function appendWithSpacing(existingText, newText) {
+    if (!existingText) return newText;
+    
+    const lastChar = existingText[existingText.length - 1];
+    const firstChar = newText[0];
+    
+    // Add appropriate spacing based on punctuation
+    if (lastChar.match(/[.!?]/) || firstChar.match(/[.!?]/)) {
+        return existingText + ' ' + newText;
+    } else if (lastChar === ',' || firstChar === ',') {
+        return existingText + ' ' + newText;
+    } else if (lastChar === ' ' || firstChar === ' ') {
+        return existingText + newText;
+    } else {
+        return existingText + ' ' + newText;
+    }
 }
 
 // Update language selection UI when detected
